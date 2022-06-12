@@ -1,6 +1,4 @@
 %{
-/* analisador sintático para uma calculadora */
-/* com suporte a definição de variáveis */
 #include <iostream>
 #include <string>
 #include <unordered_map>
@@ -17,6 +15,8 @@ void yyerror(const char *);
 
 /* tabela de símbolos */
 unordered_map<string,double> variables;
+
+/* flag para saber se a instrução dentro do if deve ser executada */
 bool iflag = true;
 %}
 
@@ -49,8 +49,8 @@ bool iflag = true;
 
 %%
 
-prog: prog code '\n'
-	| code '\n'
+prog: prog code '\n'				
+	| code '\n'		
 	;
 
 code: inst
@@ -60,6 +60,7 @@ code: inst
 
 inst: ID '=' expr 					{ if (iflag) variables[$1] = $3; } 	
 	| PRINT '(' args ')'			{ cout << '\n';}
+	;
 
 if: IF '(' relif ')' inst			{ iflag = true; }
 

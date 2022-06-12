@@ -4,8 +4,6 @@
 #include "parser.h"
 #include <string.h>
 
-char str[100];
-
 char * substr(char * str, int start, int end);
 %}
 
@@ -14,27 +12,23 @@ char * substr(char * str, int start, int end);
 
 %x      STRING
 
-digito	[0-9]
-letra_	[a-zA-Z_]
-pontdig {digito}*"."?{digito}+
-digpont {digito}+"."
+digit	[0-9]
+letter_	[a-zA-Z_]
+pontdig {digit}*"."?{digit}+
+digpont {digit}+"."
 
-numero  {pontdig}|{digpont}
-id		{letra_}({letra_}|{digito})*
-sqrt    sqrt
-pow     pow
-if      if
-print   print
+number  {pontdig}|{digpont}
+id		{letter_}({letter_}|{digit})*
 str     \"[^\"\n]*\"
 
 %%
 
 [\t ]+		{ ; }
-{sqrt}      { return SQRT; }
-{pow}       { return POW; }
-{if}        { return IF; }
-{print}     { return PRINT; }
-{numero}    { yylval.num = atof(yytext); return NUM; }
+if          { return IF; }
+sqrt        { return SQRT; }
+pow         { return POW; }
+print       { return PRINT; }
+{number}    { yylval.num = atof(yytext); return NUM; }
 {id}		{ strcpy(yylval.id, yytext); return ID; }
 ">="        { return GTE; }
 "<="        { return LTE; }
@@ -55,6 +49,7 @@ str     \"[^\"\n]*\"
 
 %%
 
+// função para criar uma substring de uma string
 char * substr(char * str, int start, int end) {
     int i, j;
     char *sub; 
