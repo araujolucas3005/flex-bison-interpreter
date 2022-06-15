@@ -38,10 +38,14 @@ print       { return PRINT; }
                 int len = strlen(yytext);
 
                 if (len == 2) {
+                    // se a string for apenas ""
                     strcpy(yylval.str, ""); 
                 } else if (len > 100) {
+                    // limite de 100 caracteres
+                    // tira as aspas
                     strcpy(yylval.str, substr(yytext, 1, 101)); 
                 } else {
+                    // tira as aspas
                     strcpy(yylval.str, substr(yytext, 1, strlen(yytext) - 1)); 
                 }
 
