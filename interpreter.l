@@ -35,14 +35,16 @@ print       { return PRINT; }
 "=="        { return EQ; }
 "!="        { return NEQ; }
 {str}       { 
-                // quando yytext = ""
-                if (strlen(yytext) == 2) {
+                int len = strlen(yytext);
+
+                if (len == 2) {
                     strcpy(yylval.str, ""); 
+                } else if (len > 100) {
+                    strcpy(yylval.str, substr(yytext, 1, 101)); 
                 } else {
-                    // remove as aspas duplas do yytext
-                    // ex.: "test" vira test
                     strcpy(yylval.str, substr(yytext, 1, strlen(yytext) - 1)); 
                 }
+
                 return STR; 
             }
 .|\n		{ return yytext[0]; }
